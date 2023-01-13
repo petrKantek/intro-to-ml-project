@@ -1,4 +1,4 @@
-# f5611-intro-to-ml
+# intro-to-ml-project
 Final project of training a computer vision neural network on the CIFAR-10 dataset.
 
 ## Run
