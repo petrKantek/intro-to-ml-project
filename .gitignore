@@ -128,7 +128,8 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-data/
+data/*
+!data/.gitkeep 
 
 notebooks/f5611
 
