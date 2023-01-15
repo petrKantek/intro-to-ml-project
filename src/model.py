@@ -42,7 +42,7 @@ class CIFAR10Model(pl.LightningModule):
         preds = torch.argmax(logits, 1)
 
         self.valid_acc(preds, y)
-        self.log("valid/loss_epoch", loss)  # default on val/test is on_epoch only
+        self.log("valid/loss_epoch", loss)
         self.log("valid/acc_epoch", self.valid_acc)
 
         return logits
@@ -72,7 +72,7 @@ class CIFAR10Model(pl.LightningModule):
         self.log("test/loss_epoch", loss, on_step=False, on_epoch=True)
         self.log("test/acc_epoch", self.test_acc, on_step=False, on_epoch=True)
 
-    def test_epoch_end(self, test_step_outputs):  # args are defined as part of pl API
+    def test_epoch_end(self, test_step_outputs):
         dummy_input = torch.zeros(self.hparams["in_dims"], device=self.device)
         model_filename = "model_final.onnx"
         self.to_onnx(model_filename, dummy_input, export_params=True)
