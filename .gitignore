@@ -136,3 +136,5 @@ notebooks/f5611
 notebooks/wandb
 
 *.onnx
+
+.vscode/
