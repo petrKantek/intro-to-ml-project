@@ -2,13 +2,13 @@ import pytorch_lightning as pl
 import torch
 import wandb
 
-from src.utils import get_acc
+from utils import get_acc
 
 
 class CIFAR10Model(pl.LightningModule):
     def __init__(
         self,
-        model,
+        model: torch.nn.Module,
         in_dims: tuple[int, int, int, int],
         n_classes: int = 10,
         lr: float = 1e-4,

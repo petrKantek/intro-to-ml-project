@@ -5,16 +5,18 @@ from torchvision.datasets import CIFAR10
 
 
 class CIFAR10DataModule(pl.LightningDataModule):
-    def __init__(self, data_dir="../data", batch_size=64):
+    def __init__(
+        self,
+        transformations: list,
+        data_dir: str = "../data",
+        batch_size: int = 64,
+        num_workers: int = 4,
+    ):
         super().__init__()
+        self.transform = torchvision.transforms.Compose(transformations)
         self.data_dir = data_dir
         self.batch_size = batch_size
-        self.transform = torchvision.transforms.Compose(
-            [
-                torchvision.transforms.ToTensor(),
-                torchvision.transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
-            ]
-        )
+        self.num_workers = num_workers
 
     def prepare_data(self):
         CIFAR10(self.data_dir, train=True, download=True)
@@ -30,14 +32,20 @@ class CIFAR10DataModule(pl.LightningDataModule):
             )
 
     def train_dataloader(self):
-        return DataLoader(self.cifar_train, batch_size=self.batch_size, num_workers=2)
+        return DataLoader(
+            self.cifar_train, batch_size=self.batch_size, num_workers=self.num_workers
+        )
 
     def val_dataloader(self):
         return DataLoader(
-            self.cifar_val, batch_size=10 * self.batch_size, num_workers=2
+            self.cifar_val,
+            batch_size=10 * self.batch_size,
+            num_workers=self.num_workers,
         )
 
     def test_dataloader(self):
         return DataLoader(
-            self.cifar_test, batch_size=10 * self.batch_size, num_workers=2
+            self.cifar_test,
+            batch_size=10 * self.batch_size,
+            num_workers=self.num_workers,
         )
